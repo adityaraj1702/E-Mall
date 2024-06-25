@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 final ThemeData lightTheme = ThemeData(
   brightness: Brightness.light,
   colorScheme: ColorScheme.fromSwatch(
-    primarySwatch: Colors.blue,
-    accentColor: Colors.amber,
-    backgroundColor: Colors.white,
-    cardColor: Colors.white,
+    primarySwatch: Colors.orange,
+    accentColor: Colors.orangeAccent,
+    backgroundColor: Colors.orange[50],
+    cardColor: Colors.orange[100],
     errorColor: Colors.red,
   ),
-  scaffoldBackgroundColor: Colors.white,
+  scaffoldBackgroundColor: Colors.orange[50],
   canvasColor: Colors.grey[50],
 
   // Text Theme
@@ -42,9 +42,9 @@ final ThemeData lightTheme = ThemeData(
 
   // AppBar Theme
   appBarTheme: const AppBarTheme(
-    color: Colors.blue,
+    color: Colors.orange,
     elevation: 4,
-    iconTheme: IconThemeData(color: Colors.white),
+    iconTheme: IconThemeData(color: Colors.orange),
     titleTextStyle: TextStyle(
         color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
     actionsIconTheme: IconThemeData(color: Colors.white),
@@ -52,7 +52,7 @@ final ThemeData lightTheme = ThemeData(
 
   // Button Theme
   buttonTheme: ButtonThemeData(
-    buttonColor: Colors.blue,
+    buttonColor: Colors.orange,
     textTheme: ButtonTextTheme.primary,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(8.0),
@@ -62,7 +62,7 @@ final ThemeData lightTheme = ThemeData(
   // Elevated Button Theme
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
-      backgroundColor: Colors.blue,
+      backgroundColor: Colors.orange,
       foregroundColor: Colors.white,
       textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
       shape: RoundedRectangleBorder(
@@ -73,7 +73,7 @@ final ThemeData lightTheme = ThemeData(
 
   // Floating Action Button Theme
   floatingActionButtonTheme: const FloatingActionButtonThemeData(
-    backgroundColor: Colors.blue,
+    backgroundColor: Colors.orange,
     foregroundColor: Colors.white,
   ),
 
@@ -115,18 +115,6 @@ final ThemeData lightTheme = ThemeData(
     ),
   ),
 
-  // Chip Theme
-  chipTheme: ChipThemeData(
-    backgroundColor: Colors.grey[300],
-    disabledColor: Colors.grey[100],
-    selectedColor: Colors.blue[300],
-    secondarySelectedColor: Colors.blue[200],
-    padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-    labelStyle: const TextStyle(color: Colors.black),
-    secondaryLabelStyle: const TextStyle(color: Colors.white),
-    brightness: Brightness.light,
-  ),
-
   // Tab Bar Theme
   tabBarTheme: const TabBarTheme(
     labelColor: Colors.blue,
@@ -136,12 +124,13 @@ final ThemeData lightTheme = ThemeData(
   ),
 
   // Bottom Navigation Bar Theme
-  bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-    backgroundColor: Colors.white,
-    selectedItemColor: Colors.blue,
+  bottomNavigationBarTheme: BottomNavigationBarThemeData(
+    backgroundColor: Colors.orange[50],
+    selectedItemColor: Colors.orange,
     unselectedItemColor: Colors.grey,
-    selectedLabelStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-    unselectedLabelStyle: TextStyle(fontSize: 12),
+    selectedLabelStyle:
+        const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+    unselectedLabelStyle: const TextStyle(fontSize: 12),
   ),
 );
 
@@ -260,18 +249,6 @@ final ThemeData darkTheme = ThemeData(
       borderRadius: BorderRadius.circular(8.0),
     ),
     color: Colors.grey[850],
-  ),
-
-  // Chip Theme
-  chipTheme: ChipThemeData(
-    backgroundColor: Colors.grey[700],
-    disabledColor: Colors.grey[600],
-    selectedColor: Colors.tealAccent,
-    secondarySelectedColor: Colors.tealAccent[400],
-    padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-    labelStyle: const TextStyle(color: Colors.white),
-    secondaryLabelStyle: const TextStyle(color: Colors.black),
-    brightness: Brightness.dark,
   ),
 
   // Tab Bar Theme

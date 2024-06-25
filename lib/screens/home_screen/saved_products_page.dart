@@ -17,33 +17,52 @@ class SavedProductsPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Saved Products'),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: savedProducts.length,
-              itemBuilder: (context, index) {
-                final product = savedProducts[index];
-                return SavedProductTile(product: product,
-                onAddToCart: () {
-                  cartProvider.addProductToCart(product);
-                  savedProductsProvider.removeSavedProduct(product);
-                },
-                onRemoveForSavedProducts: () => savedProductsProvider.removeSavedProduct(product),);
-              },
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            Expanded(
+              child: savedProducts.isNotEmpty
+                  ? ListView.builder(
+                      itemCount: savedProducts.length,
+                      itemBuilder: (context, index) {
+                        final product = savedProducts[index];
+                        return SavedProductTile(
+                            product: product,
+                            onAddToCart: () {
+                              cartProvider.addProductToCart(product);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Added to cart'),
+                                  duration: Duration(seconds: 1),
+                                ),
+                              );
+                              savedProductsProvider.removeSavedProduct(product);
+                            },
+                            onRemoveForSavedProducts: () {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content:
+                                      Text('Item removed from Saved Products'),
+                                  duration: Duration(seconds: 1),
+                                ),
+                              );
+                              savedProductsProvider.removeSavedProduct(product);
+                            });
+                      },
+                    )
+                  : const Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.save_alt_outlined, size: 100),
+                          Text('No Saved Products'),
+                        ],
+                      ),
+                    ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: FloatingActionButton.extended(
-              icon: const Icon(Icons.shopping_cart_rounded),
-              onPressed: () {
-                Navigator.pushNamed(context, '/cart');
-              },
-              label: const Text('Go to Cart'),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:e_mall/models/product.dart';
 
@@ -29,11 +30,19 @@ class CartProductTile extends StatelessWidget {
           children: [
             Row(
               children: [
-                Image.network(
-                  product.images[0],
+                CachedNetworkImage(
                   width: 70,
                   height: 70,
+                  imageUrl: product.images[0],
                   fit: BoxFit.scaleDown,
+                  placeholder: (context, url) => const SizedBox(
+                    width: 70,
+                    height: 70, // Adjust height according to your requirement
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
                 ),
                 const SizedBox(width: 10),
                 Expanded(
@@ -42,7 +51,9 @@ class CartProductTile extends StatelessWidget {
                     children: [
                       Text(
                         product.name,
-                        style: Theme.of(context).textTheme.titleMedium,
+                        style: Theme.of(context).textTheme.titleLarge,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
                       Text(
                         product.description,
@@ -51,7 +62,7 @@ class CartProductTile extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                       ),
                       Text(
-                        '\$${product.price.toStringAsFixed(2)}',
+                        '₹ ${product.price.toStringAsFixed(2)}',
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                               color: Colors.green,
                             ),
@@ -64,24 +75,25 @@ class CartProductTile extends StatelessWidget {
             Row(
               children: [
                 IconButton(
-                  icon: Icon(Icons.bookmark_border),
+                  icon: const Icon(Icons.bookmark_border),
                   onPressed: onSaveForLater,
+                  tooltip: 'Save for later',
                 ),
                 const SizedBox(
                   width: 10,
                 ),
                 IconButton(
-                  icon: Icon(Icons.remove),
+                  icon: const Icon(Icons.remove),
                   onPressed: onDecrease,
                 ),
                 Text('$quantity'),
                 IconButton(
-                  icon: Icon(Icons.add),
+                  icon: const Icon(Icons.add),
                   onPressed: onIncrease,
                 ),
                 const Spacer(),
                 IconButton(
-                  icon: Icon(Icons.delete),
+                  icon: const Icon(Icons.delete),
                   onPressed: onRemove,
                 ),
               ],

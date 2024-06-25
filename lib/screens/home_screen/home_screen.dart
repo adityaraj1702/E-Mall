@@ -1,3 +1,6 @@
+import 'package:e_mall/providers/cart_provider.dart';
+import 'package:e_mall/providers/saved_product_provider.dart';
+import 'package:e_mall/providers/theme_provider.dart';
 import 'package:e_mall/screens/home_screen/cart_page.dart';
 import 'package:e_mall/screens/home_screen/home_page.dart';
 import 'package:e_mall/screens/home_screen/profile_page.dart';
@@ -18,38 +21,43 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => BottomNavProvider(),
-      child: Consumer<BottomNavProvider>(
+    return Consumer<BottomNavProvider>(
         builder: (context, provider, child) {
+          final cart = Provider.of<CartProvider>(context).cartItems;
+          final savedProducts =
+              Provider.of<SavedProductsProvider>(context).savedProducts;
+          final themeProvider = Provider.of<ThemeProvider>(context);
           return Scaffold(
             body: _pages[provider.selectedIndex],
             bottomNavigationBar: BottomNavigationBar(
-              items: const <BottomNavigationBarItem>[
-                BottomNavigationBarItem(
+              items: <BottomNavigationBarItem>[
+                const BottomNavigationBarItem(
                   icon: Icon(Icons.home),
                   label: 'Home',
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.bookmark),
+                  icon: savedProducts.isNotEmpty
+                      ? const Icon(Icons.bookmark_rounded)
+                      : const Icon(Icons.bookmark_border_rounded),
                   label: 'Saved',
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.shopping_cart),
+                  icon: cart.isNotEmpty
+                      ? const Icon(Icons.shopping_cart_rounded)
+                      : const Icon(Icons.shopping_cart_outlined),
                   label: 'Cart',
                 ),
-                BottomNavigationBarItem(
+                const BottomNavigationBarItem(
                   icon: Icon(Icons.person),
                   label: 'Profile',
                 ),
               ],
               currentIndex: provider.selectedIndex,
-              selectedItemColor: Colors.amber[800],
+              selectedItemColor: themeProvider.themeData.colorScheme.primary,
               onTap: provider.selectTab,
             ),
           );
         },
-      ),
     );
   }
 }

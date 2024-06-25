@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:e_mall/providers/saved_product_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:e_mall/models/product.dart';
@@ -30,11 +31,18 @@ class _ProductTileState extends State<ProductTile> {
             const SizedBox(
               height: 2,
             ),
-            Image.network(
-              widget.product.images[0],
-              height: 180,
-              width: double.infinity,
+            CachedNetworkImage(
+              height: 170,
+              imageUrl: widget.product.images[0],
               fit: BoxFit.scaleDown,
+              placeholder: (context, url) => const SizedBox(
+                width: 70,
+                height: 180, // Adjust height according to your requirement
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              ),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -43,14 +51,23 @@ class _ProductTileState extends State<ProductTile> {
                 children: [
                   Text(
                     widget.product.name,
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                  Text(
-                    widget.product.description,
+                    style: Theme.of(context).textTheme.titleLarge,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  Text('\$${widget.product.price.toStringAsFixed(2)}'),
+                  Text(
+                    widget.product.description,
+                    style: Theme.of(context).textTheme.titleMedium,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Text(
+                    '₹ ${widget.product.price.toStringAsFixed(2)}',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: Colors.green,
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
                   IconButton(
                     icon: Icon(
                       Provider.of<SavedProductsProvider>(context)

@@ -2,6 +2,8 @@ import 'package:e_mall/firebase_options.dart';
 import 'package:e_mall/models/product.dart';
 import 'package:e_mall/providers/bottom_nav_provider.dart';
 import 'package:e_mall/providers/cart_provider.dart';
+import 'package:e_mall/providers/category_provider.dart';
+import 'package:e_mall/providers/profile_data_provider.dart';
 import 'package:e_mall/providers/saved_product_provider.dart';
 import 'package:e_mall/screens/auth/auth_screen.dart';
 import 'package:e_mall/screens/auth/login_screen.dart';
@@ -33,17 +35,20 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ChangeNotifierProvider(create: (_) => BottomNavProvider()),
+        ChangeNotifierProvider(create: (_) => CategoryProvider()),
         ChangeNotifierProvider(create: (_) => CartProvider()),
         ChangeNotifierProvider(create: (_) => SavedProductsProvider()),
+        ChangeNotifierProvider(create: (_) => ProfileProvider()),
       ],
       child: Builder(builder: (context) {
         final themeProvider = Provider.of<ThemeProvider>(context);
+        final isSystemDarkMode = themeProvider.isSystemDarkMode(context);
         return MaterialApp(
           title: 'E Mall',
           debugShowCheckedModeBanner: false,
-          themeMode: themeProvider.themeMode,
-          darkTheme: darkTheme,
-          theme: lightTheme,
+          theme: themeProvider.appTheme == AppTheme.system
+              ? (isSystemDarkMode ? darkTheme : lightTheme)
+              : themeProvider.themeData,
           routes: {
             '/': (context) => const SplashSscreen(),
             '/auth': (context) => const AuthScreen(),
