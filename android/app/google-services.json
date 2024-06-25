@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "282725857586",
+    "project_id": "e-mall-c020d",
+    "storage_bucket": "e-mall-c020d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:282725857586:android:1b8c64ea33e8ea1f52ff2b",
+        "android_client_info": {
+          "package_name": "com.example.e_mall"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3be7RttR-HZBUlAGFSnmigES6Qc2_YI8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
