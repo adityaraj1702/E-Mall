@@ -24,7 +24,8 @@ class ProfilePage extends StatelessWidget {
     }
 
     Future<void> _editProfileField(String field, String currentValue) async {
-      TextEditingController controller = TextEditingController(text: currentValue);
+      TextEditingController controller =
+          TextEditingController(text: currentValue);
 
       await showDialog(
         context: context,
@@ -76,7 +77,7 @@ class ProfilePage extends StatelessWidget {
                 content: const Text(
                     'Do you want to logout? Items in cart and maked saved will be lost'),
                 actions: [
-                  ElevatedButton(
+                  TextButton(
                     onPressed: () async {
                       await Provider.of<ProfileProvider>(context, listen: false)
                           .deleteProfileData();
@@ -85,12 +86,11 @@ class ProfilePage extends StatelessWidget {
                       Provider.of<CartProvider>(context, listen: false)
                           .deleteCartFromLocalStorage();
                       await FirebaseAuth.instance.signOut();
-                      // Navigator.popAndPushNamed(context, '/auth');
                       popAndPushAuthScreen(context);
                     },
                     child: const Text('Logout'),
                   ),
-                  TextButton(
+                  ElevatedButton(
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
@@ -101,6 +101,7 @@ class ProfilePage extends StatelessWidget {
     }
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text('Profile'),
         centerTitle: true,
@@ -158,20 +159,21 @@ class ProfilePage extends StatelessWidget {
               onEdit: () => _editProfileField(
                   'Mobile Number', profileProvider.mobileNumber),
             ),
-            const Spacer(),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const SettingsPage(),
-                  ),
-                );
-              },
-              child: const Text('Go to Settings'),
-            ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        shape: const CircleBorder(),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const SettingsPage(),
+            ),
+          );
+        },
+        child: const Icon(Icons.settings),
+        tooltip: 'Go to Settings',
       ),
     );
   }
@@ -182,7 +184,8 @@ class ProfileDetail extends StatelessWidget {
   final String value;
   final VoidCallback? onEdit;
 
-  const ProfileDetail({super.key, required this.label, required this.value, this.onEdit});
+  const ProfileDetail(
+      {super.key, required this.label, required this.value, this.onEdit});
 
   @override
   Widget build(BuildContext context) {
