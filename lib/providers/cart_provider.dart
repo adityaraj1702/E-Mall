@@ -74,6 +74,13 @@ class CartProvider with ChangeNotifier {
         .toList();
     notifyListeners();
   }
+
+  void deleteCartFromLocalStorage()async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove('cartItems');
+    _cartItems = [];
+    notifyListeners();
+  }
 }
 
 class CartItem {

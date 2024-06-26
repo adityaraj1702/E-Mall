@@ -16,6 +16,8 @@ class SavedProductsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Saved Products'),
+        centerTitle: true,
+        automaticallyImplyLeading: false,
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),

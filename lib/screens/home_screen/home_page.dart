@@ -15,8 +15,9 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('E Mall'),
+        title: const Text('Urban Cart'),
         centerTitle: true,
+        automaticallyImplyLeading: false,
       ),
       body: Consumer<CategoryProvider>(
           builder: (context, categoryProvider, child) {
@@ -56,14 +57,14 @@ class _HomePageState extends State<HomePage> {
                                   ? Theme.of(context).primaryColor
                                   : Theme.of(context).brightness ==
                                           Brightness.light
-                                      ? Colors.white
-                                      : Colors.grey,
+                                      ? Theme.of(context).cardColor
+                                      : Colors.grey[400],
                               borderRadius: BorderRadius.circular(10),
                               boxShadow: [
                                 BoxShadow(
                                   color: Colors.grey.withOpacity(0.5),
-                                  spreadRadius: 2,
-                                  blurRadius: 2,
+                                  spreadRadius: 1,
+                                  blurRadius: 1,
                                 ),
                               ],
                             ),

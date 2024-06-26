@@ -44,7 +44,7 @@ final ThemeData lightTheme = ThemeData(
   appBarTheme: const AppBarTheme(
     color: Colors.orange,
     elevation: 4,
-    iconTheme: IconThemeData(color: Colors.orange),
+    iconTheme: IconThemeData(color: Colors.white),
     titleTextStyle: TextStyle(
         color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
     actionsIconTheme: IconThemeData(color: Colors.white),
@@ -248,7 +248,6 @@ final ThemeData darkTheme = ThemeData(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(8.0),
     ),
-    color: Colors.grey[850],
   ),
 
   // Tab Bar Theme

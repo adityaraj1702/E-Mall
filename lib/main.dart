@@ -1,5 +1,4 @@
 import 'package:e_mall/firebase_options.dart';
-import 'package:e_mall/models/product.dart';
 import 'package:e_mall/providers/bottom_nav_provider.dart';
 import 'package:e_mall/providers/cart_provider.dart';
 import 'package:e_mall/providers/category_provider.dart';
@@ -10,7 +9,6 @@ import 'package:e_mall/screens/auth/login_screen.dart';
 import 'package:e_mall/screens/auth/register_screen.dart';
 import 'package:e_mall/screens/home_screen/cart_page.dart';
 import 'package:e_mall/screens/home_screen/home_screen.dart';
-import 'package:e_mall/screens/product_details_screen/product_details_screen.dart';
 import 'package:e_mall/screens/splash_screen.dart';
 import 'package:e_mall/providers/theme_provider.dart';
 import 'package:e_mall/themes/themes.dart';
@@ -44,7 +42,7 @@ class MyApp extends StatelessWidget {
         final themeProvider = Provider.of<ThemeProvider>(context);
         final isSystemDarkMode = themeProvider.isSystemDarkMode(context);
         return MaterialApp(
-          title: 'E Mall',
+          title: 'Urban Cart',
           debugShowCheckedModeBanner: false,
           theme: themeProvider.appTheme == AppTheme.system
               ? (isSystemDarkMode ? darkTheme : lightTheme)
@@ -55,8 +53,6 @@ class MyApp extends StatelessWidget {
             '/login': (context) => const LoginScreen(),
             '/register': (context) => const RegisterScreen(),
             '/home': (context) => HomeScreen(),
-            '/product-details': (context) => ProductDetailsScreen(
-                product: ModalRoute.of(context)!.settings.arguments as Product),
             '/cart': (context) => const CartPage(),
           },
         );

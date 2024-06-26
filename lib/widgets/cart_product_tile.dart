@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:e_mall/screens/product_details_screen/product_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:e_mall/models/product.dart';
 
@@ -28,49 +29,61 @@ class CartProductTile extends StatelessWidget {
         padding: const EdgeInsets.all(10),
         child: Column(
           children: [
-            Row(
-              children: [
-                CachedNetworkImage(
-                  width: 70,
-                  height: 70,
-                  imageUrl: product.images[0],
-                  fit: BoxFit.scaleDown,
-                  placeholder: (context, url) => const SizedBox(
+            GestureDetector(
+              onTap: () {
+                // Navigator.pushNamed(context, '/product-details',
+                //     arguments: product);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ProductDetailsScreen(product: product,)),
+                );
+              },
+              child: Row(
+                children: [
+                  CachedNetworkImage(
                     width: 70,
-                    height: 70, // Adjust height according to your requirement
-                    child: Center(
-                      child: CircularProgressIndicator(),
+                    height: 70,
+                    imageUrl: product.images[0],
+                    fit: BoxFit.scaleDown,
+                    placeholder: (context, url) => const SizedBox(
+                      width: 70,
+                      height: 70, // Adjust height according to your requirement
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    ),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          product.name,
+                          style: Theme.of(context).textTheme.titleLarge,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        Text(
+                          product.description,
+                          style: Theme.of(context).textTheme.bodySmall,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        Text(
+                          '₹ ${product.price.toStringAsFixed(2)}',
+                          style:
+                              Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                    color: Colors.green,
+                                  ),
+                        ),
+                      ],
                     ),
                   ),
-                  errorWidget: (context, url, error) => const Icon(Icons.error),
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        product.name,
-                        style: Theme.of(context).textTheme.titleLarge,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      Text(
-                        product.description,
-                        style: Theme.of(context).textTheme.bodySmall,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      Text(
-                        '₹ ${product.price.toStringAsFixed(2)}',
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: Colors.green,
-                            ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
             Row(
               children: [

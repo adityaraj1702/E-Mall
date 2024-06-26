@@ -44,4 +44,10 @@ class SavedProductsProvider with ChangeNotifier {
         .toList();
     notifyListeners();
   }
+  void deleteSavedProductsFromLocalStorage() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove('savedProducts');
+    _savedProducts = [];
+    notifyListeners();
+  }
 }

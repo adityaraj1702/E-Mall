@@ -5,16 +5,24 @@ import 'package:e_mall/models/product.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:provider/provider.dart';
 
-class ProductDetailsScreen extends StatelessWidget {
+class ProductDetailsScreen extends StatefulWidget {
   final Product product;
 
   const ProductDetailsScreen({super.key, required this.product});
 
   @override
+  _ProductDetailsScreenState createState() => _ProductDetailsScreenState();
+}
+
+class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
+  int _currentIndex = 0;
+  final CarouselController _controller = CarouselController();
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(product.name),
+        title: const Text("Product Details"),
       ),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
@@ -24,14 +32,7 @@ class ProductDetailsScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CarouselSlider(
-                options: CarouselOptions(
-                  height: 300.0,
-                  enlargeCenterPage: true,
-                  enableInfiniteScroll: false,
-                  initialPage: 0,
-                  aspectRatio: 2,
-                ),
-                items: product.images.map((image) {
+                items: widget.product.images.map((image) {
                   return Builder(
                     builder: (BuildContext context) {
                       return Container(
@@ -62,16 +63,54 @@ class ProductDetailsScreen extends StatelessWidget {
                     },
                   );
                 }).toList(),
+                carouselController: _controller,
+                options: CarouselOptions(
+                  height: 300.0,
+                  enlargeCenterPage: true,
+                  enableInfiniteScroll: false,
+                  initialPage: 0,
+                  aspectRatio: 2,
+                  onPageChanged: (index, reason) {
+                    setState(() {
+                      _currentIndex = index;
+                    });
+                  },
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: widget.product.images.asMap().entries.map((entry) {
+                  return GestureDetector(
+                    onTap: () => _controller.animateToPage(entry.key),
+                    child: Container(
+                      width: 8.0,
+                      height: 8.0,
+                      margin: const EdgeInsets.symmetric(
+                          vertical: 10.0, horizontal: 4.0),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: (Theme.of(context).brightness == Brightness.dark
+                                ? Colors.white
+                                : Colors.orangeAccent)
+                            .withOpacity(
+                                _currentIndex == entry.key ? 0.9 : 0.4),
+                      ),
+                    ),
+                  );
+                }).toList(),
               ),
               const SizedBox(height: 16),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    product.name,
-                    style: Theme.of(context).textTheme.titleLarge,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width - 90,
+                    child: Text(
+                      widget.product.name,
+                      style: Theme.of(context).textTheme.titleLarge,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                   IconButton(
                     onPressed: () {
@@ -89,7 +128,7 @@ class ProductDetailsScreen extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               Text(
-                '₹ ${product.price.toStringAsFixed(2)}',
+                '₹ ${widget.product.price.toStringAsFixed(2)}',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: Colors.green,
                       fontWeight: FontWeight.bold,
@@ -106,7 +145,7 @@ class ProductDetailsScreen extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               Text(
-                product.description,
+                widget.product.description,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
               const SizedBox(height: 20),
@@ -117,9 +156,12 @@ class ProductDetailsScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           Provider.of<CartProvider>(context, listen: false)
-              .addProductToCart(product);
+              .addProductToCart(widget.product);
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Added to cart'), duration: Duration(seconds: 1),),
+            const SnackBar(
+              content: Text('Added to cart'),
+              duration: Duration(seconds: 1),
+            ),
           );
         },
         label: const Text('Add to Cart'),
