@@ -1,8 +1,5 @@
-import 'package:e_mall/providers/bottom_nav_provider.dart';
-import 'package:e_mall/screens/auth/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class AuthScreen extends StatelessWidget {
   const AuthScreen({super.key});
@@ -18,7 +15,6 @@ class AuthScreen extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           } else if (snapshot.hasData) {
-            Provider.of<BottomNavProvider>(context, listen: false).selectTab(0);
             WidgetsBinding.instance.addPostFrameCallback(
               (_) {
                 Navigator.popAndPushNamed(context, '/home');
@@ -26,7 +22,10 @@ class AuthScreen extends StatelessWidget {
             );
             return Container();
           } else {
-            return const LoginScreen();
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              Navigator.pushReplacementNamed(context, '/login');
+            });
+            return Container();
           }
         },
       ),

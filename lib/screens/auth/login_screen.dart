@@ -1,10 +1,14 @@
 import 'package:e_mall/constants/images.dart';
+import 'package:e_mall/providers/bottom_nav_provider.dart';
+import 'package:e_mall/providers/profile_data_provider.dart';
+import 'package:e_mall/screens/home_screen/home_screen.dart';
 import 'package:e_mall/widgets/button_widget.dart';
 import 'package:e_mall/widgets/custom_text_field.dart';
 import 'package:e_mall/widgets/custom_password_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -32,7 +36,6 @@ class _LoginScreenState extends State<LoginScreen> {
   void login() async {
     final email = emailController.text;
     final password = passwordController.text;
-    print('Email: $email, Password: $password');
     showDialog(
       context: context,
       builder: (context) {
@@ -46,29 +49,31 @@ class _LoginScreenState extends State<LoginScreen> {
         email: email,
         password: password,
       );
-      Navigator.pop(context);
-      Navigator.pushReplacementNamed(
-        context,
-        '/home',
-      );
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        Navigator.pop(context);
+        Provider.of<ProfileProvider>(context, listen: false).setEmail(email);
+        Provider.of<BottomNavProvider>(context, listen: false).selectTab(0);
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HomeScreen()),
+        );
+      });
     } on FirebaseAuthException catch (e) {
       Navigator.pop(context);
       if (e.code == 'invalid-credential') {
-        print("wrong email or password");
-        loginError('Incorrect EmailID or Password');
+        feedbackDialog('Incorrect EmailID or Password', 'Error!');
       } else {
-        print(e.code);
-        loginError(e.code);
+        feedbackDialog(e.code, 'Error!');
       }
     }
   }
 
-  void loginError(String message) {
+  void feedbackDialog(String message, String title) {
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Error'),
+          title: Text(title),
           content: Text(message),
           actions: [
             TextButton(
@@ -81,6 +86,26 @@ class _LoginScreenState extends State<LoginScreen> {
         );
       },
     );
+  }
+
+  void forgotPassword() async {
+    final email = emailController.text;
+    if (email.isEmpty) {
+      feedbackDialog('Enter email in the email field', 'Error!');
+      return;
+    }
+
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      feedbackDialog(
+          'Password reset email sent! Check your email.', 'Success!');
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        feedbackDialog('No user found with this email.', 'Error!');
+      } else {
+        feedbackDialog('An error occurred. Please try again.', 'Error!');
+      }
+    }
   }
 
   void validateEmail(String value) {
@@ -148,13 +173,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   padding: const EdgeInsets.all(16),
                   width: wt - 70,
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Theme.of(context).brightness == Brightness.light
+                        ? Colors.white
+                        : Colors.grey[300],
                     borderRadius: BorderRadius.circular(15),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 5,
-                        blurRadius: 7,
+                        spreadRadius: 2,
+                        blurRadius: 2,
                       ),
                     ],
                   ),
@@ -183,9 +210,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         alignment: Alignment.centerRight,
                         child: TextButton(
                           onPressed: () {
-                            // Implement forgot password logic
+                            forgotPassword();
                           },
-                          child: const Text('Forgot Password?'),
+                          child: const Text(
+                            'Forgot Password?',
+                          ),
                         ),
                       ),
                       const SizedBox(
@@ -213,9 +242,16 @@ class _LoginScreenState extends State<LoginScreen> {
                             child: CircleAvatar(
                               radius: 25,
                               backgroundColor: Colors.grey[300],
-                              child: Image.asset(
-                                loginOptions[index],
-                                width: 30,
+                              child: GestureDetector(
+                                onTap: () {
+                                  feedbackDialog(
+                                      'This feature is not available as of now.',
+                                      'Sorry!');
+                                },
+                                child: Image.asset(
+                                  loginOptions[index],
+                                  width: 30,
+                                ),
                               ),
                             ),
                           ),
@@ -231,11 +267,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   onPressed: () {
                     Navigator.pushNamed(context, '/register');
                   },
-                  child: const Text(
-                    "Don't have an account? Register",
-                    style: TextStyle(
-                      color: Colors.black,
-                    ),
+                  child: Text(
+                    "Don't have an account? Register!",
+                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                          decoration: TextDecoration.underline,
+                        ),
                   ),
                 ),
                 const SizedBox(

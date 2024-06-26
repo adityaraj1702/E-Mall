@@ -1,9 +1,13 @@
 import 'package:e_mall/constants/images.dart';
+import 'package:e_mall/providers/bottom_nav_provider.dart';
+import 'package:e_mall/providers/profile_data_provider.dart';
+import 'package:e_mall/screens/home_screen/home_screen.dart';
 import 'package:e_mall/widgets/button_widget.dart';
 import 'package:e_mall/widgets/custom_text_field.dart';
 import 'package:e_mall/widgets/custom_password_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -50,23 +54,28 @@ class _RegisterScreenState extends State<RegisterScreen> {
         email: email,
         password: password,
       );
-      Navigator.pop(context); // Close the loading dialog
-      Navigator.pushReplacementNamed(
-        context,
-        '/home',
-      );
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        Navigator.pop(context);
+        Provider.of<ProfileProvider>(context, listen: false).setEmail(email);
+        Provider.of<BottomNavProvider>(context, listen: false).selectTab(0);
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => HomeScreen()),
+          (route) => false,
+        );
+      });
     } on FirebaseAuthException catch (e) {
       Navigator.pop(context); // Close the loading dialog
-      showErrorDialog(e.message ?? 'An error occurred');
+      feedbackDialog(e.message ?? 'An error occurred', 'Error!');
     }
   }
 
-  void showErrorDialog(String message) {
+  void feedbackDialog(String message, String title) {
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Error'),
+          title: Text(title),
           content: Text(message),
           actions: [
             TextButton(
@@ -214,9 +223,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           child: CircleAvatar(
                             radius: 25,
                             backgroundColor: Colors.grey[300],
-                            child: Image.asset(
-                              regsisterOptions[index],
-                              width: 30,
+                            child: GestureDetector(
+                              onTap: () {
+                                feedbackDialog(
+                                    'This feature is not available as of now.',
+                                    'Sorry!');
+                              },
+                              child: Image.asset(
+                                regsisterOptions[index],
+                                width: 30,
+                              ),
                             ),
                           ),
                         ),
@@ -232,11 +248,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 onPressed: () {
                   Navigator.pushNamed(context, '/login');
                 },
-                child: const Text(
-                  "Already have an account? Login",
-                  style: TextStyle(
-                    color: Colors.black,
-                  ),
+                child: Text(
+                  "Already have an account? Login!",
+                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                        decoration: TextDecoration.underline,
+                      ),
                 ),
               ),
               const SizedBox(

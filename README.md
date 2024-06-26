@@ -13,20 +13,44 @@ Urban Cart is a Flutter-based e-commerce application that allows users to browse
 
 ## Screenshots
 
-Add screenshots of your app here to showcase its UI and features.
+### Splash Screen
+![SplashScreen](https://drive.google.com/uc?export=view&id=1gwFFTbwst1EXOtnW-kgN4eJc2ZwSDrzU)
 
-![SplashScreen](https://drive.google.com/file/d/1gwFFTbwst1EXOtnW-kgN4eJc2ZwSDrzU/view?usp=sharing)
-![RegisterScreen](https://drive.google.com/file/d/1gvcZ82ZfttWwjaeCfGracQb7qr0yDL1t/view?usp=sharing)
-![LoginScreen](https://drive.google.com/file/d/1gtQbQha9UOzXjpDQJ9qhIZ04WQa1evNV/view?usp=sharing)
-![HomePage](https://drive.google.com/file/d/1hLCPlV0uLAgvsxqHvfbZEjgfKlA-RYMC/view?usp=sharing)
-![ProductDetailsScreen](https://drive.google.com/file/d/1hT_39EevtsZyXbMVwsm0NcB3DkI2yYdC/view?usp=sharing)
-![Saved Product Page](https://drive.google.com/file/d/1h4M5sO2QrXsrkLinIPWCiyRwRhnsZd71/view?usp=sharing)
-![CartPage](https://drive.google.com/file/d/1h0NX6SbALEsDWvq1a5MWRgL_NRb3S_8u/view?usp=sharing)
-![ProfilePage](https://drive.google.com/file/d/1gs_DSPjXZUdd-ZIza7Egt0o5d4j76ogG/view?usp=sharing)
-![ThemeSettingsPage](https://drive.google.com/file/d/1h-lWMcxnhSUL1tXhgz-UjpbPLuJzwGSJ/view?usp=sharing)
-![HomePage_DarkMode](https://drive.google.com/file/d/1h-BLjrTrM67uGqu1nL4hRNtCInNS17hG/view?usp=sharing)
+### Registration Screen
 
+![RegisterScreen](https://drive.google.com/uc?export=view&id=1gvcZ82ZfttWwjaeCfGracQb7qr0yDL1t)
 
+### Login Screen
+
+![LoginScreen](https://drive.google.com/uc?export=view&id=1gtQbQha9UOzXjpDQJ9qhIZ04WQa1evNV)
+
+### Home Page
+
+![HomePage](https://drive.google.com/uc?export=view&id=1hLCPlV0uLAgvsxqHvfbZEjgfKlA-RYMC)
+
+### Product Details Screen
+
+![ProductDetailsScreen](https://drive.google.com/uc?export=view&id=1hT_39EevtsZyXbMVwsm0NcB3DkI2yYdC)
+
+### Saved Product Page
+
+![Saved Product Page](https://drive.google.com/uc?export=view&id=1h4M5sO2QrXsrkLinIPWCiyRwRhnsZd71)
+
+### Cart Page
+
+![CartPage](https://drive.google.com/uc?export=view&id=1h0NX6SbALEsDWvq1a5MWRgL_NRb3S_8u)
+
+### Profile Page
+
+![ProfilePage](https://drive.google.com/uc?export=view&id=1gs_DSPjXZUdd-ZIza7Egt0o5d4j76ogG)
+
+### Theme Settings Page
+
+![ThemeSettingsPage](https://drive.google.com/uc?export=view&id=1h-lWMcxnhSUL1tXhgz-UjpbPLuJzwGSJ)
+
+### Home Page Dark Mode
+
+![HomePage_DarkMode](https://drive.google.com/uc?export=view&id=1h-BLjrTrM67uGqu1nL4hRNtCInNS17hG)
 
 ## Demo Video
 

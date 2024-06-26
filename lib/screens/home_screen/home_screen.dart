@@ -21,12 +21,12 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<BottomNavProvider>(
-      builder: (context, provider, child) {
         final cart = Provider.of<CartProvider>(context).cartItems;
         final savedProducts =
             Provider.of<SavedProductsProvider>(context).savedProducts;
         final themeProvider = Provider.of<ThemeProvider>(context);
+    return Consumer<BottomNavProvider>(
+      builder: (context, provider, child) {
         return Scaffold(
           body: _pages[provider.selectedIndex],
           bottomNavigationBar: BottomNavigationBar(

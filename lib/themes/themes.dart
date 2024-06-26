@@ -115,12 +115,15 @@ final ThemeData lightTheme = ThemeData(
     ),
   ),
 
-  // Tab Bar Theme
-  tabBarTheme: const TabBarTheme(
-    labelColor: Colors.blue,
-    unselectedLabelColor: Colors.grey,
-    labelStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-    unselectedLabelStyle: TextStyle(fontSize: 16),
+  // TextButton Theme
+  textButtonTheme: TextButtonThemeData(
+    style: TextButton.styleFrom(
+      foregroundColor: Colors.orangeAccent,
+      textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+    ),
   ),
 
   // Bottom Navigation Bar Theme
@@ -250,14 +253,16 @@ final ThemeData darkTheme = ThemeData(
     ),
   ),
 
-  // Tab Bar Theme
-  tabBarTheme: const TabBarTheme(
-    labelColor: Colors.tealAccent,
-    unselectedLabelColor: Colors.grey,
-    labelStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-    unselectedLabelStyle: TextStyle(fontSize: 16),
+  // TextButton Theme
+  textButtonTheme: TextButtonThemeData(
+    style: TextButton.styleFrom(
+      foregroundColor: Colors.tealAccent,
+      textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+    ),
   ),
-
   // Bottom Navigation Bar Theme
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
     backgroundColor: Colors.black,

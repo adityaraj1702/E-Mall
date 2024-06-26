@@ -1,3 +1,4 @@
+import 'package:e_mall/providers/bottom_nav_provider.dart';
 import 'package:e_mall/providers/cart_provider.dart';
 import 'package:e_mall/providers/profile_data_provider.dart';
 import 'package:e_mall/providers/saved_product_provider.dart';
@@ -63,9 +64,12 @@ class ProfilePage extends StatelessWidget {
     }
 
     void popAndPushAuthScreen(BuildContext context) {
-      Navigator.popUntil(
-          context, (route) => route.isFirst); // Pop until first screen
-      Navigator.pushNamed(context, '/auth');
+      Provider.of<BottomNavProvider>(context, listen: false).selectTab(0);
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        '/auth',
+        (route) => false,
+      );
     }
 
     Future<void> logout() async {
