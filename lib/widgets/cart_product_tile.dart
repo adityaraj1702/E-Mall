@@ -31,8 +31,6 @@ class CartProductTile extends StatelessWidget {
           children: [
             GestureDetector(
               onTap: () {
-                // Navigator.pushNamed(context, '/product-details',
-                //     arguments: product);
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => ProductDetailsScreen(product: product,)),

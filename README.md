@@ -13,48 +13,36 @@ Urban Cart is a Flutter-based e-commerce application that allows users to browse
 
 ## Screenshots
 
-### Splash Screen
-![SplashScreen](https://drive.google.com/uc?export=view&id=1gwFFTbwst1EXOtnW-kgN4eJc2ZwSDrzU)
+### Splash Screen, Registration Screen, and Login Screen
+<span style="display: inline-block;">
+<img src="https://drive.google.com/uc?export=view&id=1gwFFTbwst1EXOtnW-kgN4eJc2ZwSDrzU" width="250">
+<img src="https://drive.google.com/uc?export=view&id=1gvcZ82ZfttWwjaeCfGracQb7qr0yDL1t" width="250">
+<img src="https://drive.google.com/uc?export=view&id=1gtQbQha9UOzXjpDQJ9qhIZ04WQa1evNV" width="250">
+</span>
 
-### Registration Screen
+### Home Page, Product Details Screen, and Saved Product Page
+<span style="display: inline-block;">
+<img src="https://drive.google.com/uc?export=view&id=1hLCPlV0uLAgvsxqHvfbZEjgfKlA-RYMC" height="500">
+<img src="https://drive.google.com/uc?export=view&id=1hT_39EevtsZyXbMVwsm0NcB3DkI2yYdC" height="500">
+<img src="https://drive.google.com/uc?export=view&id=1h4M5sO2QrXsrkLinIPWCiyRwRhnsZd71" height="500">
+</span>
 
-![RegisterScreen](https://drive.google.com/uc?export=view&id=1gvcZ82ZfttWwjaeCfGracQb7qr0yDL1t)
-
-### Login Screen
-
-![LoginScreen](https://drive.google.com/uc?export=view&id=1gtQbQha9UOzXjpDQJ9qhIZ04WQa1evNV)
-
-### Home Page
-
-![HomePage](https://drive.google.com/uc?export=view&id=1hLCPlV0uLAgvsxqHvfbZEjgfKlA-RYMC)
-
-### Product Details Screen
-
-![ProductDetailsScreen](https://drive.google.com/uc?export=view&id=1hT_39EevtsZyXbMVwsm0NcB3DkI2yYdC)
-
-### Saved Product Page
-
-![Saved Product Page](https://drive.google.com/uc?export=view&id=1h4M5sO2QrXsrkLinIPWCiyRwRhnsZd71)
-
-### Cart Page
-
-![CartPage](https://drive.google.com/uc?export=view&id=1h0NX6SbALEsDWvq1a5MWRgL_NRb3S_8u)
-
-### Profile Page
-
-![ProfilePage](https://drive.google.com/uc?export=view&id=1gs_DSPjXZUdd-ZIza7Egt0o5d4j76ogG)
-
-### Theme Settings Page
-
-![ThemeSettingsPage](https://drive.google.com/uc?export=view&id=1h-lWMcxnhSUL1tXhgz-UjpbPLuJzwGSJ)
+### Cart Page, Profile Page, and Theme Settings Page
+<span style="display: inline-block;">
+<img src="https://drive.google.com/uc?export=view&id=1h0NX6SbALEsDWvq1a5MWRgL_NRb3S_8u" height="500">
+<img src="https://drive.google.com/uc?export=view&id=1gs_DSPjXZUdd-ZIza7Egt0o5d4j76ogG" height="500">
+<img src="https://drive.google.com/uc?export=view&id=1h-lWMcxnhSUL1tXhgz-UjpbPLuJzwGSJ" height="500">
+</span>
 
 ### Home Page Dark Mode
-
-![HomePage_DarkMode](https://drive.google.com/uc?export=view&id=1h-BLjrTrM67uGqu1nL4hRNtCInNS17hG)
+<img src="https://drive.google.com/uc?export=view&id=1h-BLjrTrM67uGqu1nL4hRNtCInNS17hG" height="500">
 
 ## Demo Video
 
 [Demo Video](https://drive.google.com/file/d/1gkOW14G6rUQYLfdhqprJeZgsTRjyabfv/view?usp=sharing)
+
+## Google Drive Folder
+All screenshots, demo video and apk build can be found in the [Google Drive Folder](https://drive.google.com/drive/folders/18pYLJwp9T2383-iy5usPOxqV37OeZuNM?usp=sharing)
 
 ## Installation
 
