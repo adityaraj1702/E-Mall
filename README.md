@@ -35,8 +35,11 @@ Urban Cart is a Flutter-based e-commerce application that allows users to browse
 </span>
 
 ### Home Page Dark Mode
+<span style="display: inline-block;">
 <img src="https://drive.google.com/uc?export=view&id=1h-BLjrTrM67uGqu1nL4hRNtCInNS17hG" height="500">
-
+<img src="https://drive.google.com/uc?export=view&id=1j0kYMuNJDMJltLPTOC4X60ZmC3ECA2Ww" height="500">
+<img src="https://drive.google.com/uc?export=view&id=1j0Je1Y1MdD9uHpppBYCKe_DnpbBkLcxG" height="500">
+</span>
 ## Demo Video
 
 [Demo Video](https://drive.google.com/file/d/1gkOW14G6rUQYLfdhqprJeZgsTRjyabfv/view?usp=sharing)
