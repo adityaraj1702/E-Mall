@@ -17,19 +17,19 @@ class Product {
     required this.images,
   });
 
-  Map<String, dynamic> toMap() {
+  static Map<String, dynamic> toFirestore(Product product) {
     return {
-      'id': id,
-      'name': name,
-      'description': description,
-      'price': price,
-      'isFeatured': isFeatured,
-      'category': category,
-      'images': images,
+      'id': product.id,
+      'name': product.name,
+      'description': product.description,
+      'price': product.price,
+      'isFeatured': product.isFeatured,
+      'category': product.category,
+      'images': product.images,
     };
   }
 
-  static Product fromMap(Map<String, dynamic> map) {
+  static Product fromFirestore(Map<String, dynamic> map) {
     return Product(
       id: map['id'],
       name: map['name'],

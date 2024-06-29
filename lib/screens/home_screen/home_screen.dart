@@ -1,4 +1,5 @@
 import 'package:e_mall/providers/cart_provider.dart';
+import 'package:e_mall/providers/profile_data_provider.dart';
 import 'package:e_mall/providers/saved_product_provider.dart';
 import 'package:e_mall/providers/theme_provider.dart';
 import 'package:e_mall/screens/home_screen/cart_page.dart';
@@ -22,8 +23,8 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
         final cart = Provider.of<CartProvider>(context).cartItems;
-        final savedProducts =
-            Provider.of<SavedProductsProvider>(context).savedProducts;
+        final savedItems =
+            Provider.of<SavedProductsProvider>(context).savedItems;
         final themeProvider = Provider.of<ThemeProvider>(context);
     return Consumer<BottomNavProvider>(
       builder: (context, provider, child) {
@@ -36,7 +37,7 @@ class HomeScreen extends StatelessWidget {
                 label: 'Home',
               ),
               BottomNavigationBarItem(
-                icon: savedProducts.isNotEmpty
+                icon: savedItems.isNotEmpty
                     ? const Icon(Icons.bookmark_rounded)
                     : const Icon(Icons.bookmark_border_rounded),
                 label: 'Saved',

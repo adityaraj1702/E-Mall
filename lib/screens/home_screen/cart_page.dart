@@ -30,7 +30,7 @@ class CartPage extends StatelessWidget {
                       itemBuilder: (context, index) {
                         final cartItem = cartItems[index];
                         return CartProductTile(
-                          product: cartItem.product,
+                          product: cartItem.product!,
                           quantity: cartItem.quantity,
                           onIncrease: () =>
                               cartProvider.increaseQuantity(cartItem),
@@ -41,37 +41,35 @@ class CartPage extends StatelessWidget {
                             cartProvider.decreaseQuantity(cartItem);
                           },
                           onRemove: () {
+                            cartProvider.removeProductFromCart(cartItem);
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text('Item removed from Cart'),
                                 duration: Duration(seconds: 1),
                               ),
                             );
-                            cartProvider.removeProduct(cartItem);
                           },
                           onSaveForLater: () {
+                            savedProductsProvider
+                                .addProductToSaved(cartItem.product!);
+                            cartProvider.removeProductFromCart(cartItem);
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text('Moved to Saved Products'),
                                 duration: Duration(seconds: 1),
                               ),
                             );
-                            cartProvider.saveForLater(cartItem);
-                            savedProductsProvider
-                                .toggleSavedProduct(cartItem.product);
                           },
                         );
                       },
                     )
                   : const Center(
-                      child: SingleChildScrollView(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.shopping_cart_outlined, size: 100),
-                            Text('Cart is Empty'),
-                          ],
-                        ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.shopping_cart_outlined, size: 100),
+                          Text('Cart is Empty'),
+                        ],
                       ),
                     ),
             ),

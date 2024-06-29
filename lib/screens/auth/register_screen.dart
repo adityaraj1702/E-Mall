@@ -1,10 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_mall/constants/images.dart';
 import 'package:e_mall/providers/bottom_nav_provider.dart';
+import 'package:e_mall/providers/category_provider.dart';
 import 'package:e_mall/providers/profile_data_provider.dart';
 import 'package:e_mall/screens/home_screen/home_screen.dart';
 import 'package:e_mall/widgets/button_widget.dart';
-import 'package:e_mall/widgets/custom_text_field.dart';
 import 'package:e_mall/widgets/custom_password_field.dart';
+import 'package:e_mall/widgets/custom_text_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -50,14 +52,47 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
 
     try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      UserCredential userCredential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
+
+      User? user = userCredential.user;
+      if (user != null) {
+        // await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
+        //   'email': email,
+        // });
+
+        // await FirebaseFirestore.instance
+        //     .collection('users')
+        //     .doc(user.uid)
+        //     .collection('savedProducts')
+        //     .doc(user.uid).set({});
+        // await FirebaseFirestore.instance
+        //     .collection('users')
+        //     .doc(user.uid)
+        //     .collection('cart')
+        //     .get();
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .collection('profile')
+            .doc(user.uid)
+            .set({
+          'name': '',
+          'email': email,
+          'mobileNumber': '',
+          'image': '',
+        });
+        Provider.of<ProfileProvider>(context, listen: false).setEmail(email);
+      }
+
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         Navigator.pop(context);
-        Provider.of<ProfileProvider>(context, listen: false).setEmail(email);
         Provider.of<BottomNavProvider>(context, listen: false).selectTab(0);
+        // Provider.of<CategoryProvider>(context, listen: false).fetchCategories();
+        // Provider.of<CategoryProvider>(context, listen: false).fetchProducts();
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => HomeScreen()),
@@ -159,13 +194,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 padding: const EdgeInsets.all(16),
                 width: wt - 70,
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Theme.of(context).brightness == Brightness.light
+                      ? Colors.white
+                      : Colors.grey,
                   borderRadius: BorderRadius.circular(15),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.grey.withOpacity(0.5),
-                      spreadRadius: 5,
-                      blurRadius: 7,
+                      spreadRadius: 2,
+                      blurRadius: 2,
                     ),
                   ],
                 ),

@@ -75,20 +75,24 @@ class ProductTile extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    IconButton(
-                      icon: Icon(
-                        Provider.of<SavedProductsProvider>(context)
-                                .savedProducts
-                                .any((savedProduct) =>
-                                    savedProduct.id == product.id)
-                            ? Icons.bookmark
-                            : Icons.bookmark_border,
-                      ),
-                      onPressed: () {
-                        Provider.of<SavedProductsProvider>(context,
-                                listen: false)
-                            .toggleSavedProduct(product);
-                      },
+                    Consumer<SavedProductsProvider>(
+                      builder: (context, provider, child) {
+                        return IconButton(
+                          icon: Icon(
+                            provider.savedItems.any((savedItem) =>
+                                  savedItem.productId == product.id)
+                                ? Icons.bookmark
+                                : Icons.bookmark_border,
+                          ),
+                          onPressed: () {
+                            print(product.id);
+                            provider.savedItems.any((savedItem) =>
+                                  savedItem.productId == product.id)
+                              ? provider.removeProductFromSaved(SavedItem(productId: product.id, product: product,),)
+                              : provider.addProductToSaved(product);
+                          },
+                        );
+                      }
                     ),
                     if (product.isFeatured)
                       const Padding(

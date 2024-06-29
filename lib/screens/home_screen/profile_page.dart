@@ -1,3 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:e_mall/data/product_data.dart';
+import 'package:e_mall/models/product.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:e_mall/providers/bottom_nav_provider.dart';
 import 'package:e_mall/providers/cart_provider.dart';
 import 'package:e_mall/providers/profile_data_provider.dart';
@@ -79,16 +83,16 @@ class ProfilePage extends StatelessWidget {
             return AlertDialog(
                 title: const Text('Logout?'),
                 content: const Text(
-                    'Do you want to logout? Items in cart and maked saved will be lost'),
+                    'Do you want to logout? Items in cart and marked saved will be lost'),
                 actions: [
                   TextButton(
                     onPressed: () async {
-                      await Provider.of<ProfileProvider>(context, listen: false)
-                          .deleteProfileData();
+                      Provider.of<ProfileProvider>(context, listen: false)
+                          .clearProfileOnLogout();
                       Provider.of<SavedProductsProvider>(context, listen: false)
-                          .deleteSavedProductsFromLocalStorage();
+                          .clearSavedOnLogout();
                       Provider.of<CartProvider>(context, listen: false)
-                          .deleteCartFromLocalStorage();
+                          .clearCartOnLogout();
                       await FirebaseAuth.instance.signOut();
                       popAndPushAuthScreen(context);
                     },
@@ -102,6 +106,20 @@ class ProfilePage extends StatelessWidget {
                   ),
                 ]);
           });
+    }
+
+    // used this method to upload all the hardcoded product data to cloud firestore
+    Future<void> _uploadProducts() async {
+      for (Product product in productList) {
+        CollectionReference prodList =
+            FirebaseFirestore.instance.collection('productiveList');
+        await prodList.add(Product.toFirestore(product));
+      }
+      // Show a confirmation message or dialog
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('Products added to Firestore successfully')),
+      );
     }
 
     return Scaffold(
@@ -128,18 +146,20 @@ class ProfilePage extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: 60,
-                  backgroundImage: profileProvider.image != null
-                      ? MemoryImage(profileProvider.image!)
+                  backgroundImage: profileProvider.imageUrl != ''
+                      ? CachedNetworkImageProvider(
+                          profileProvider.imageUrl,
+                        )
                       : const AssetImage('assets/images/user.png')
                           as ImageProvider,
+                  // backgroundColor: Colors.transparent,
                 ),
                 Positioned(
                   bottom: 0,
                   right: 0,
                   child: IconButton(
                     icon: Icon(
-                      Icons.edit,
-                      color: Theme.of(context).primaryColor,
+                      Icons.add_a_photo_rounded,
                     ),
                     onPressed: _pickImage,
                   ),
@@ -163,6 +183,17 @@ class ProfilePage extends StatelessWidget {
               onEdit: () => _editProfileField(
                   'Mobile Number', profileProvider.mobileNumber),
             ),
+            // Button to upload all the hardcoded product data to cloud firestore
+            // const SizedBox(height: 20),
+            // ElevatedButton(
+            //   onPressed: _uploadProducts,
+            //   child: const Text('Upload Products'),
+            // ),
+            // const SizedBox(height: 20),
+            // ElevatedButton(
+            //   onPressed: profileProvider.test,
+            //   child: const Text('product list'),
+            // ),
           ],
         ),
       ),
@@ -176,8 +207,8 @@ class ProfilePage extends StatelessWidget {
             ),
           );
         },
-        child: const Icon(Icons.settings),
         tooltip: 'Go to Settings',
+        child: const Icon(Icons.settings),
       ),
     );
   }

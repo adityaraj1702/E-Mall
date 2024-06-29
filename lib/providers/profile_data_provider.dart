@@ -1,77 +1,170 @@
-import 'dart:convert';
+import 'dart:typed_data';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ProfileProvider with ChangeNotifier {
-  Uint8List? _image;
-  String _name = "";
-  String _email = "";
-  String _mobileNumber = "";
+  String _name = '';
+  String _email = '';
+  String _mobileNumber = '';
+  // Uint8List? _image;
+  String _imageUrl = '';
+  bool _isLoading = true;
 
-  ProfileProvider() {
-    _loadProfileData();
-  }
-
-  Uint8List? get image => _image;
   String get name => _name;
   String get email => _email;
   String get mobileNumber => _mobileNumber;
+  String get imageUrl => _imageUrl;
+  bool get isLoading => _isLoading;
 
-  Future<void> _loadProfileData() async {
-    final prefs = await SharedPreferences.getInstance();
-    final imageString = prefs.getString('image');
-    if (imageString != null) {
-      _image = base64Decode(imageString);
-    } else {
-      final byteData = await rootBundle.load('assets/images/user.png');
-      _image = byteData.buffer.asUint8List();
-    }
-    _name = prefs.getString('name') ?? _name;
-    _email = prefs.getString('email') ?? _email;
-    _mobileNumber = prefs.getString('mobileNumber') ?? _mobileNumber;
-    notifyListeners();
+  ProfileProvider() {
+    fetchProfileData();
   }
 
-  Future<void> setImage(Uint8List image) async {
-    _image = image;
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('image', base64Encode(image));
+  Future<void> fetchProfileData() async {
+    _isLoading = true;
     notifyListeners();
+
+    try {
+      User? user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        DocumentSnapshot doc = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .collection('profile')
+            .doc(user.uid)
+            .get();
+
+        if (doc.exists) {
+          _name = doc['name'] ?? '';
+          _email = doc['email'] ?? user.email ?? '';
+          _mobileNumber = doc['mobileNumber'] ?? '';
+          _imageUrl = doc['image'] ?? '';
+        }
+      }
+    } catch (e) {
+      print(e);
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> test() async {
+    FirebaseFirestore.instance.collection('productList').get().then((value)=>value.docs.forEach((result){
+      print(result.data());
+    }));
   }
 
   Future<void> setName(String name) async {
     _name = name;
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('name', name);
+    await _updateProfileField('name', name);
     notifyListeners();
   }
 
   Future<void> setEmail(String email) async {
     _email = email;
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('email', email);
+    // await _updateProfileField('email', email);
     notifyListeners();
   }
 
   Future<void> setMobileNumber(String mobileNumber) async {
     _mobileNumber = mobileNumber;
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('mobileNumber', mobileNumber);
+    await _updateProfileField('mobileNumber', mobileNumber);
     notifyListeners();
   }
 
+  Future<void> setImage(Uint8List imageFile) async {
+    try {
+      User? user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        String imageUrl = '';
+        Reference ref = FirebaseStorage.instance
+            .ref()
+            .child('ProfileImages')
+            .child(user.uid); // Unique path for each user's image
+        UploadTask uploadTask = ref.putData(imageFile);
+        TaskSnapshot snapshot = await uploadTask;
+        imageUrl = await snapshot.ref.getDownloadURL();
+        print(imageUrl);
+        _imageUrl = imageUrl;
+        await _updateProfileField('image', imageUrl);
+        notifyListeners();
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  // Future<void> uploadImage() async {
+  //   try {
+  //     final ImagePicker picker = ImagePicker();
+  //     final XFile? pickedFile =
+  //         await picker.pickImage(source: ImageSource.gallery);
+
+  //     if (pickedFile != null) {
+  //       Uint8List imageFile = await pickedFile.readAsBytes();
+
+  //       User? user = FirebaseAuth.instance.currentUser;
+  //       if (user != null) {
+  //         String imageUrl = '';
+  //         Reference ref = FirebaseStorage.instance
+  //             .ref()
+  //             .child('ProfileImages')
+  //             .child(user.uid); // Unique path for each user's image
+  //         UploadTask uploadTask = ref.putData(imageFile);
+  //         TaskSnapshot snapshot = await uploadTask;
+  //         imageUrl = await snapshot.ref.getDownloadURL();
+  //         print(imageUrl);
+  //         // _imageUrl = imageUrl;
+  //         // await _updateProfileField('image', imageUrl);
+  //         // notifyListeners();
+  //       }
+  //     }
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
+
+  Future<void> _updateProfileField(String field, dynamic value) async {
+    try {
+      User? user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .collection('profile')
+            .doc(user.uid)
+            .update({field: value});
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
   Future<void> deleteProfileData() async {
-    final prefs = await SharedPreferences.getInstance();
-    setName("");
-    setEmail("");
-    setMobileNumber("");
-    final byteData = await rootBundle.load('assets/images/user.png');
-    setImage(byteData.buffer.asUint8List());
-    await prefs.remove('name');
-    await prefs.remove('mobileNumber');
-    await prefs.remove('email');
-    await prefs.remove('image');
+    try {
+      User? user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .delete();
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void clearProfileOnLogout() {
+    _name = '';
+    _email = '';
+    _mobileNumber = '';
+    _imageUrl = '';
+    _isLoading = true;
     notifyListeners();
   }
 }

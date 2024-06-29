@@ -10,7 +10,7 @@ class SavedProductsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final savedProductsProvider = Provider.of<SavedProductsProvider>(context);
-    final savedProducts = savedProductsProvider.savedProducts;
+    final savedItems = savedProductsProvider.savedItems;
     final cartProvider = Provider.of<CartProvider>(context);
 
     return Scaffold(
@@ -24,24 +24,25 @@ class SavedProductsPage extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
-              child: savedProducts.isNotEmpty
+              child: savedItems.isNotEmpty
                   ? ListView.builder(
-                      itemCount: savedProducts.length,
+                      itemCount: savedItems.length,
                       itemBuilder: (context, index) {
-                        final product = savedProducts[index];
+                        final savedItem = savedItems[index];
                         return SavedProductTile(
-                            product: product,
+                            product: savedItem.product!,
                             onAddToCart: () {
-                              cartProvider.addProductToCart(product);
+                              cartProvider.addProductToCart(savedItem.product!);
+                              savedProductsProvider.removeProductFromSaved(savedItem);
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Text('Added to cart'),
                                   duration: Duration(seconds: 1),
                                 ),
                               );
-                              savedProductsProvider.removeSavedProduct(product);
                             },
                             onRemoveForSavedProducts: () {
+                              savedProductsProvider.removeProductFromSaved(savedItem);
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content:
@@ -49,7 +50,6 @@ class SavedProductsPage extends StatelessWidget {
                                   duration: Duration(seconds: 1),
                                 ),
                               );
-                              savedProductsProvider.removeSavedProduct(product);
                             });
                       },
                     )

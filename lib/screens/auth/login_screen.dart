@@ -1,6 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_mall/constants/images.dart';
 import 'package:e_mall/providers/bottom_nav_provider.dart';
+import 'package:e_mall/providers/cart_provider.dart';
+import 'package:e_mall/providers/category_provider.dart';
 import 'package:e_mall/providers/profile_data_provider.dart';
+import 'package:e_mall/providers/saved_product_provider.dart';
 import 'package:e_mall/screens/home_screen/home_screen.dart';
 import 'package:e_mall/widgets/button_widget.dart';
 import 'package:e_mall/widgets/custom_text_field.dart';
@@ -33,6 +37,17 @@ class _LoginScreenState extends State<LoginScreen> {
         passwordController.text.isNotEmpty;
   }
 
+  // Future<void> fetchUserData(String userId) async {
+  //   final userRef = FirebaseFirestore.instance.collection('users').doc(userId);
+  //   final userData = await userRef.get();
+
+  //   if (userData.exists) {
+  //     Provider.of<ProfileProvider>(context, listen: false);
+  //   } else {
+  //     feedbackDialog('User data not found', 'Error!');
+  //   }
+  // }
+
   void login() async {
     final email = emailController.text;
     final password = passwordController.text;
@@ -49,10 +64,24 @@ class _LoginScreenState extends State<LoginScreen> {
         email: email,
         password: password,
       );
+      // final userId = userCredential.user?.uid;
+
+      // if (userId != null) {
+      //   await fetchUserData(userId);
+      // }
+      // Provider.of<ProfileProvider>(context,listen: false);
+      // Provider.of<SavedProductsProvider>(context,listen: false);
+      // Provider.of<CartProvider>(context,listen: false);
+
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         Navigator.pop(context);
-        Provider.of<ProfileProvider>(context, listen: false).setEmail(email);
+        // Provider.of<CategoryProvider>(context,listen: false).fetchCategories();
+        // Provider.of<CategoryProvider>(context,listen: false).fetchProducts();
         Provider.of<BottomNavProvider>(context, listen: false).selectTab(0);
+        Provider.of<SavedProductsProvider>(context, listen: false)
+            .fetchSavedItems();
+        Provider.of<CartProvider>(context, listen: false).fetchCartItems();
+        Provider.of<ProfileProvider>(context, listen: false).fetchProfileData();
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => HomeScreen()),
@@ -139,10 +168,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return PopScope(
       canPop: false,
       onPopInvoked: (canPop) async {
-        // if (!canPop) {
-        SystemNavigator.pop(); // This will close the app
-        // }
-        // return canPop;
+        SystemNavigator.pop();
       },
       child: Scaffold(
         resizeToAvoidBottomInset: false,
@@ -175,7 +201,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   decoration: BoxDecoration(
                     color: Theme.of(context).brightness == Brightness.light
                         ? Colors.white
-                        : Colors.grey[300],
+                        : Colors.grey,
                     borderRadius: BorderRadius.circular(15),
                     boxShadow: [
                       BoxShadow(
