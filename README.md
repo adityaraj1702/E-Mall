@@ -1,6 +1,6 @@
 # Urban Cart
 
-Urban Cart is a Flutter-based e-commerce application that allows users to browse, save, and purchase products across various categories. The app integrates with Firebase for authentication and utilizes local storage to persist user data such as saved products and cart items.
+Urban Cart is a Flutter-based e-commerce application that allows users to browse, save, and purchase products across various categories. The app integrates with Firebase for authentication and utilizes cloud firestore to save user data such as profile, saved products and cart items.
 
 ## Features
 
@@ -9,7 +9,7 @@ Urban Cart is a Flutter-based e-commerce application that allows users to browse
 - Save products for later
 - Add products to cart
 - View detailed product information
-- Persistent storage for saved products, cart items and user profile 
+- Cloud Firestore for saved products, cart items and user profile 
 
 ## Screenshots
 
@@ -69,6 +69,7 @@ All screenshots, demo video and apk build can be found in the [Google Drive Fold
    - Add an Android app to your Firebase project and download the `google-services.json` file.
    - Place the `google-services.json` file in the `android/app` directory of your Flutter project.
    - Ensure that your `android/build.gradle` and `android/app/build.gradle` files are properly configured as shown in the setup instructions from Firebase.
+   - Enable Firebase Authentication with Email and Password, Cloud Firestore, and Storage in your Firebase project from the Firebase console.
 
 4. **Run the app**
 
@@ -112,11 +113,11 @@ State management in this application is handled using the `Provider` package.
 - `cart_provider.dart`: Manages the user's cart, including adding, removing, and updating cart items and there quantities.
 - `saved_product_provider.dart`: Manages the user's saved products, allowing them to save products for later.
 - `profile_data_provider.dart`: Manages the user's profile data, such as name, mobile number, and profile picture.
-- `bottom_nav_providor.dart`: Manages the bottom nav bar, allowing users to switch between screens.
-- `category_providor.dart`: Manages the selected category, allowing users to browse products by category.
+- `bottom_nav_providor.dart`: Manages the bottom nav bar, allowing users to switch between pages.
+- `category_providor.dart`: Manages the selected category, and products allowing users to browse products by category.
 
 ## Credits
-Product data is hardcoded in the app. The data is made from [Flipkart.com](https://www.flipkart.com).
+Product data for app is setup in Firestore. The data is made from [Flipkart.com](https://www.flipkart.com).
 
 ## Contributing
 
