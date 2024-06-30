@@ -1,9 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:e_mall/data/product_data.dart';
-import 'package:e_mall/models/product.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:e_mall/providers/bottom_nav_provider.dart';
 import 'package:e_mall/providers/cart_provider.dart';
+import 'package:e_mall/providers/category_provider.dart';
 import 'package:e_mall/providers/profile_data_provider.dart';
 import 'package:e_mall/providers/saved_product_provider.dart';
 import 'package:e_mall/screens/settings_page.dart';
@@ -93,6 +91,7 @@ class ProfilePage extends StatelessWidget {
                           .clearSavedOnLogout();
                       Provider.of<CartProvider>(context, listen: false)
                           .clearCartOnLogout();
+                      Provider.of<CategoryProvider>(context,listen: false).clearHomePageOnLogout();
                       await FirebaseAuth.instance.signOut();
                       popAndPushAuthScreen(context);
                     },
@@ -106,20 +105,6 @@ class ProfilePage extends StatelessWidget {
                   ),
                 ]);
           });
-    }
-
-    // used this method to upload all the hardcoded product data to cloud firestore
-    Future<void> _uploadProducts() async {
-      for (Product product in productList) {
-        CollectionReference prodList =
-            FirebaseFirestore.instance.collection('productiveList');
-        await prodList.add(Product.toFirestore(product));
-      }
-      // Show a confirmation message or dialog
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text('Products added to Firestore successfully')),
-      );
     }
 
     return Scaffold(
@@ -183,17 +168,6 @@ class ProfilePage extends StatelessWidget {
               onEdit: () => _editProfileField(
                   'Mobile Number', profileProvider.mobileNumber),
             ),
-            // Button to upload all the hardcoded product data to cloud firestore
-            // const SizedBox(height: 20),
-            // ElevatedButton(
-            //   onPressed: _uploadProducts,
-            //   child: const Text('Upload Products'),
-            // ),
-            // const SizedBox(height: 20),
-            // ElevatedButton(
-            //   onPressed: profileProvider.test,
-            //   child: const Text('product list'),
-            // ),
           ],
         ),
       ),

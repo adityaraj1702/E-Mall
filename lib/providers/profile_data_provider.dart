@@ -4,13 +4,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 
 class ProfileProvider with ChangeNotifier {
   String _name = '';
   String _email = '';
   String _mobileNumber = '';
-  // Uint8List? _image;
   String _imageUrl = '';
   bool _isLoading = true;
 
@@ -98,36 +96,6 @@ class ProfileProvider with ChangeNotifier {
       print(e);
     }
   }
-
-  // Future<void> uploadImage() async {
-  //   try {
-  //     final ImagePicker picker = ImagePicker();
-  //     final XFile? pickedFile =
-  //         await picker.pickImage(source: ImageSource.gallery);
-
-  //     if (pickedFile != null) {
-  //       Uint8List imageFile = await pickedFile.readAsBytes();
-
-  //       User? user = FirebaseAuth.instance.currentUser;
-  //       if (user != null) {
-  //         String imageUrl = '';
-  //         Reference ref = FirebaseStorage.instance
-  //             .ref()
-  //             .child('ProfileImages')
-  //             .child(user.uid); // Unique path for each user's image
-  //         UploadTask uploadTask = ref.putData(imageFile);
-  //         TaskSnapshot snapshot = await uploadTask;
-  //         imageUrl = await snapshot.ref.getDownloadURL();
-  //         print(imageUrl);
-  //         // _imageUrl = imageUrl;
-  //         // await _updateProfileField('image', imageUrl);
-  //         // notifyListeners();
-  //       }
-  //     }
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
 
   Future<void> _updateProfileField(String field, dynamic value) async {
     try {

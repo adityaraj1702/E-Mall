@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_mall/constants/images.dart';
 import 'package:e_mall/providers/bottom_nav_provider.dart';
-import 'package:e_mall/providers/category_provider.dart';
 import 'package:e_mall/providers/profile_data_provider.dart';
 import 'package:e_mall/screens/home_screen/home_screen.dart';
 import 'package:e_mall/widgets/button_widget.dart';
@@ -60,20 +59,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
       User? user = userCredential.user;
       if (user != null) {
-        // await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
-        //   'email': email,
-        // });
-
-        // await FirebaseFirestore.instance
-        //     .collection('users')
-        //     .doc(user.uid)
-        //     .collection('savedProducts')
-        //     .doc(user.uid).set({});
-        // await FirebaseFirestore.instance
-        //     .collection('users')
-        //     .doc(user.uid)
-        //     .collection('cart')
-        //     .get();
         await FirebaseFirestore.instance
             .collection('users')
             .doc(user.uid)
@@ -91,8 +76,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         Navigator.pop(context);
         Provider.of<BottomNavProvider>(context, listen: false).selectTab(0);
-        // Provider.of<CategoryProvider>(context, listen: false).fetchCategories();
-        // Provider.of<CategoryProvider>(context, listen: false).fetchProducts();
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => HomeScreen()),

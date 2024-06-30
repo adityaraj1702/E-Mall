@@ -9,8 +9,6 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Provider.of<CategoryProvider>(context, listen: false).fetchCategories();
-    // Provider.of<CategoryProvider>(context, listen: false).fetchProducts();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Urban Cart'),
@@ -19,9 +17,8 @@ class HomePage extends StatelessWidget {
       ),
       body: Consumer<CategoryProvider>(
         builder: (context, categoryProvider, child) {
-          // categoryProvider.fetchCategories();
-          if (categoryProvider.isCategoryLoading &&
-              categoryProvider.categoryList.isEmpty) {
+          if (categoryProvider.isCategoryLoading) {
+            categoryProvider.fetchCategories();
             return const Center(child: CircularProgressIndicator());
           }
 
@@ -90,14 +87,18 @@ class HomePage extends StatelessWidget {
               ),
               const Divider(color: Colors.grey),
               Builder(builder: (context) {
+                if (categoryProvider.isProductsLoading) {
+                  categoryProvider.fetchProducts();
+                  return const Text('product loading...');
+                }
                 List<Product> filteredProducts =
                     categoryProvider.filterProducts(categoryProvider
                         .categoryList[categoryProvider.selectedIndex]);
-                        print("filtered product length");
-                        print(filteredProducts.length);
+                print("filtered product length");
+                print(filteredProducts.length);
                 return Expanded(
-                  child: categoryProvider.isProductsLoading
-                      ? const Center(child: CircularProgressIndicator())
+                  child: filteredProducts.isEmpty
+                      ? const Text('filtered product empty')
                       : GridView.builder(
                           padding: const EdgeInsets.all(10),
                           gridDelegate:

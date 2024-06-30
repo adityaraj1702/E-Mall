@@ -1,5 +1,4 @@
 import 'package:e_mall/providers/cart_provider.dart';
-import 'package:e_mall/providers/profile_data_provider.dart';
 import 'package:e_mall/providers/saved_product_provider.dart';
 import 'package:e_mall/providers/theme_provider.dart';
 import 'package:e_mall/screens/home_screen/cart_page.dart';

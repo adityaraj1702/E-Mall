@@ -1,9 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:e_mall/providers/category_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:e_mall/models/product.dart';
-import 'package:provider/provider.dart';
 
 class CartProvider with ChangeNotifier {
   List<CartItem> _cartItems = [];
@@ -52,23 +50,6 @@ class CartProvider with ChangeNotifier {
           cartItem.product = Product.fromFirestore(doc.data());
         }
       });
-      // for (CartItem cartItem in _cartItems) {
-
-      //   QuerySnapshot snapshot = await FirebaseFirestore.instance
-      //       .collectionGroup('items')
-      //       .get();
-      //   final doc = snapshot.docs.firstWhere(
-      //       (doc) => doc['id'] == cartItem.productId);
-      //     cartItem.product = Product(
-      //       id: doc['id'],
-      //       name: doc['name'],
-      //       description: doc['description'],
-      //       price: doc['price'],
-      //       category: doc['category'],
-      //       isFeatured: doc['isFeatured'],
-      //       images: List<String>.from(doc['images']),
-      //     );
-      // }
     } catch (e) {
       print(e);
     } finally {
@@ -81,12 +62,10 @@ class CartProvider with ChangeNotifier {
       (cartItem) => cartItem.productId == product.id,
       orElse: () => CartItem(productId: product.id, quantity: 0),
     );
-    //if product is already in the cart,then call increaseQuantity
     if (existingCartItem.quantity > 0) {
       existingCartItem.product = product;
       increaseQuantity(existingCartItem);
     } else {
-      //if product is not in the cart, add it to the cart and add product.id to firestore
       try {
         User? user = FirebaseAuth.instance.currentUser;
         if (user != null) {
@@ -99,7 +78,6 @@ class CartProvider with ChangeNotifier {
               .doc(product.id)
               .set({'quantity': existingCartItem.quantity});
           _cartItems.add(existingCartItem);
-          // await _fetchCartProducts();
           notifyListeners();
         }
       } catch (e) {
@@ -140,15 +118,6 @@ class CartProvider with ChangeNotifier {
               .doc(cartItem.productId)
               .update({'quantity': cartItem.quantity});
         }
-        // else {
-        //   _cartItems.remove(cartItem);
-        //   await FirebaseFirestore.instance
-        //       .collection('users')
-        //       .doc(user.uid)
-        //       .collection('cartItems')
-        //       .doc(cartItem.productId)
-        //       .delete();
-        // }
         notifyListeners();
       }
     } catch (e) {
@@ -193,16 +162,6 @@ class CartProvider with ChangeNotifier {
             doc.reference.delete();
           }
         });
-        // WriteBatch batch = FirebaseFirestore.instance.batch();
-        // _cartItems.forEach((cartItem) {
-        //   DocumentReference docRef = FirebaseFirestore.instance
-        //       .collection('users')
-        //       .doc(user.uid)
-        //       .collection('cartItems')
-        //       .doc(cartItem.productId);
-        //   batch.delete(docRef);
-        // });
-        // await batch.commit();
         _cartItems.clear();
         notifyListeners();
       }

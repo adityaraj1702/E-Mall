@@ -6,29 +6,28 @@ class CategoryProvider with ChangeNotifier {
   int _selectedIndex = 0;
   List<String> _categoryList = [];
   List<Product> _products = [];
-  // List<Product> _filteredProducts = [];
   bool _isCategoryLoading = true;
   bool _isProductsLoading = true;
 
   int get selectedIndex => _selectedIndex;
   List<String> get categoryList => _categoryList;
   List<Product> get products => _products;
-  // List<Product> get filteredProducts => _filteredProducts;
   bool get isCategoryLoading => _isCategoryLoading;
   bool get isProductsLoading => _isProductsLoading;
 
-  CategoryProvider() {
-    fetchCategories();
-    fetchProducts();
-  }
 
   void selectCategory(int index) {
     _selectedIndex = index;
-    // _filteredProducts = filterProducts(_categoryList[_selectedIndex]);
     notifyListeners();
   }
 
   List<Product> filterProducts(String category) {
+    if(_products.isEmpty){
+      print("product list is empty");
+    }else{
+      print('product list length is');
+      print(_products.length);
+    }
     List<Product> filteredProducts = category == 'Featured'
         ? _products.where((product) => product.isFeatured).toList()
         : _products.where((product) => product.category == category).toList();
@@ -36,13 +35,7 @@ class CategoryProvider with ChangeNotifier {
   }
 
   Future<void> fetchCategories() async {
-    _isCategoryLoading = true;
-    notifyListeners();
-    if(_categoryList.isNotEmpty){
-      _isCategoryLoading = false;
-      notifyListeners();
-      return;
-    }
+    _categoryList.clear();
     try {
       final collection = FirebaseFirestore.instance.collection('categoryList');
       final docRef = collection.doc('7BVT9qYCV1EH5rSK6A23');
@@ -63,45 +56,32 @@ class CategoryProvider with ChangeNotifier {
       notifyListeners();
     }
   }
-
   Future<void> fetchProducts() async {
-    _isProductsLoading = true;
-    notifyListeners();
-    if(_products.isNotEmpty){
-      print('product lenght');
-      print(_products.length);
-      _isProductsLoading = false;
-      notifyListeners();
-      return;
-    }
+    _products.clear();
     try {
-      await FirebaseFirestore.instance.collection('productList').get().then(
-            (value) => value.docs.forEach(
-              (result) {
-                final data = result.data();
-                // _products.add(
-                //   Product(
-                //     id: data['id'],
-                //     name: data['name'],
-                //     description: data['description'],
-                //     price: data['price'],
-                //     category: data['category'],
-                //     isFeatured: data['isFeatured'],
-                //     images: List<String>.from(data['images']),
-                //   ),
-                // );
-                _products.add(Product.fromFirestore(data));
-                print('proddvss len');
-                print(_products.length);
-              },
-            ),
-          );
-      print(_products.length);
+      var querySnapshot =
+          await FirebaseFirestore.instance.collection('productList').get();
+      for (var doc in querySnapshot.docs) {
+        print(doc.data());
+        _products.add(Product.fromFirestore(doc.data()));
+      }
+      if (_products.isEmpty) {
+        print("No products found");
+      }
     } catch (e) {
-      print(e);
-    } finally {
+      print("Error fetching products: $e");
+    }
+    finally {
       _isProductsLoading = false;
       notifyListeners();
     }
+  }
+
+  void clearHomePageOnLogout(){
+    _products.clear();
+    _categoryList.clear();
+    _isProductsLoading=true;
+    _isCategoryLoading=true;
+    notifyListeners();
   }
 }
